@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:form_flutter/model/contato.dart';
+import 'package:form_flutter/validators/mask.dart';
 import 'package:form_flutter/validators/validators.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 
 void main() {
@@ -34,6 +34,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
+  ContatoModel contato = ContatoModel();
 
   void validateAndSave() {
     final FormState? form = _formKey.currentState;
@@ -44,20 +45,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
-    ContatoModel contato = ContatoModel();
     Validators myValidators = Validators();
 
-    var cpfmaskFormatter = new MaskTextInputFormatter(
-        mask: '###.###.###-##',
-        filter: { "#": RegExp(r'[0-9]') },
-    );
-
-    var phonemaskFormatter = new MaskTextInputFormatter(
-        mask: '(##) #####-####',
-        filter: { "#": RegExp(r'[0-9]') },
-    );
+    Mask mask = Mask();
 
     void updateNome(nome) {
       setState(() {
@@ -79,17 +72,17 @@ class _MyHomePageState extends State<MyHomePage> {
               validator:  myValidators.nomeValidator,
               keyboardType: TextInputType.name,
               decoration: const InputDecoration(labelText: 'Nome'),
-              onChanged: updateNome ,
+              onChanged: updateNome,
               maxLength: 100,
+
             ),
             TextFormField(
               validator:  myValidators.celularValidador,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(labelText: 'Celular'),
               onChanged: (val) => {
-              contato.nome = val,
-              print(val.length)},
-              inputFormatters: [phonemaskFormatter],
+              contato.telefone = val},
+              inputFormatters: [mask.phonemaskFormatter],
 
             ),
             TextFormField(
@@ -97,8 +90,8 @@ class _MyHomePageState extends State<MyHomePage> {
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(labelText: 'CPF'),
               onChanged: (val) => {
-              contato.cpf = val , print(val.length)},
-              inputFormatters: [cpfmaskFormatter],
+              contato.cpf = val },
+              inputFormatters: [mask.cpfmaskFormatter],
 
             ),
             TextFormField(
