@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:form_flutter/model/contato.dart';
 import 'package:form_flutter/validators/validators.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 
 void main() {
@@ -48,6 +49,22 @@ class _MyHomePageState extends State<MyHomePage> {
     ContatoModel contato = ContatoModel();
     Validators myValidators = Validators();
 
+    var cpfmaskFormatter = new MaskTextInputFormatter(
+        mask: '###.###.###-##',
+        filter: { "#": RegExp(r'[0-9]') },
+    );
+
+    var phonemaskFormatter = new MaskTextInputFormatter(
+        mask: '(##) #####-####',
+        filter: { "#": RegExp(r'[0-9]') },
+    );
+
+    void updateNome(nome) {
+      setState(() {
+        contato.nome = nome;
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(contato.nome ?? ''),
@@ -55,24 +72,33 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Form(
         key: _formKey,
         child: Wrap(
-          spacing: 20,
+          spacing: 10,
           runSpacing: 10,
           children: [
             TextFormField(
               validator:  myValidators.nomeValidator,
+              keyboardType: TextInputType.name,
               decoration: const InputDecoration(labelText: 'Nome'),
-              onChanged: (val) => contato.nome = val ,
+              onChanged: updateNome ,
+              maxLength: 100,
             ),
             TextFormField(
               validator:  myValidators.celularValidador,
+              keyboardType: TextInputType.number,
               decoration: const InputDecoration(labelText: 'Celular'),
-              onChanged: (val) => contato.nome = val ,
+              onChanged: (val) => {
+              contato.nome = val,
+              print(val.length)},
+              inputFormatters: [phonemaskFormatter],
 
             ),
             TextFormField(
               validator:  myValidators.cpfValidador,
+              keyboardType: TextInputType.number,
               decoration: const InputDecoration(labelText: 'CPF'),
-              onChanged: (val) => contato.cpf = val ,
+              onChanged: (val) => {
+              contato.cpf = val , print(val.length)},
+              inputFormatters: [cpfmaskFormatter],
 
             ),
             TextFormField(
