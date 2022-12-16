@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:form_flutter/model/contato.dart';
 import 'package:form_flutter/pages/lista_contato/list_contato_page.dart';
 import 'package:form_flutter/pages/novo_contato.dart';
 
@@ -23,7 +24,8 @@ class ContatoDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text('Novo Contato'),
-            onTap: () => sendTo(context, NovoContatoPage()),
+            onTap: () => sendTo(context, NovoContatoPage(contato: new ContatoModel(nome: '', telefone: '',
+                tipo: null, cpf: ''))),
           ),
           ListTile(
             title: Text('Contatos'),

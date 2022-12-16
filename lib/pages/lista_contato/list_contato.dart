@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_flutter/model/contato.dart';
 import 'package:form_flutter/pages/novo_contato.dart';
 import 'package:form_flutter/repository/contato_repository.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class ListContatos extends StatefulWidget {
   @override
@@ -26,7 +27,7 @@ class _ListContatosState extends State<ListContatos> {
                 trailing: IconButton(
                   icon: Icon(Icons.call),
                   //onPressed: () => FlutterPhoneState.startPhoneCall(contato.telefone),
-                  onPressed: () => print(contato.telefone),
+                  onPressed: () => makeCall(contato.telefone),
 
                 ),
               );
@@ -39,6 +40,10 @@ class _ListContatosState extends State<ListContatos> {
 
   sendEditContato(BuildContext context, contato) {
     Navigator.of(context)
-        .push(new MaterialPageRoute(builder: (_) =>  NovoContatoPage());
+        .push(new MaterialPageRoute(builder: (_) =>  NovoContatoPage(contato:contato)));
+  }
+
+  makeCall(contato) async {
+    bool? res = await FlutterPhoneDirectCaller.callNumber(contato);
   }
 }

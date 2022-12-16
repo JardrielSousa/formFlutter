@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_flutter/model/contato.dart';
+import 'package:form_flutter/model/contato_type.dart';
 import 'package:form_flutter/repository/contato_repository.dart';
 import 'package:form_flutter/validators/mask.dart';
 import 'package:form_flutter/validators/validators.dart';
@@ -8,10 +9,7 @@ import 'package:form_flutter/validators/validators.dart';
 class NovoContatoPage extends StatefulWidget {
   final ContatoModel contato;
 
-  const NovoContatoPage.edit({Key? key, required this.contato}) : super(key: key);
-
-  NovoContatoPage() : this.contato = new ContatoModel();
-
+  const NovoContatoPage({Key? key,required this.contato});
 
   @override
   State<NovoContatoPage> createState() => _NovoContatoPageState(contato);
@@ -70,8 +68,7 @@ class _NovoContatoPageState extends State<NovoContatoPage> {
               validator:  myValidators.celularValidador,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(labelText: 'Celular'),
-              onChanged: (val) => {
-                contato.telefone = val},
+              onChanged: (val) => updateTelefone,
               inputFormatters: [mask.phonemaskFormatter],
 
             ),
@@ -79,8 +76,7 @@ class _NovoContatoPageState extends State<NovoContatoPage> {
               validator:  myValidators.cpfValidador,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(labelText: 'CPF'),
-              onChanged: (val) => {
-                contato.cpf = val },
+              onChanged: (val) => updateCpf,
               inputFormatters: [mask.cpfmaskFormatter],
 
             ),
@@ -90,6 +86,23 @@ class _NovoContatoPageState extends State<NovoContatoPage> {
               decoration: const InputDecoration(labelText: 'Email'),
               onChanged: (val) => contato.cpf = val ,
 
+            ),
+            DropdownButtonFormField<ContatoType>(
+              value: contato.tipo,
+              decoration: InputDecoration(border: OutlineInputBorder()),
+              items: ContatoType.values.map((ContatoType value) {
+                return DropdownMenuItem<ContatoType>(
+                  value: value,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ContatoHelper.getIconByContatoType(value),
+                      Text(ContatoHelper.getDescription(value)),
+                    ],
+                  ),
+                );
+              }).toList(),
+              onChanged: updateTipoContato,
             ),
             ElevatedButton(
               child: const Text(
@@ -103,5 +116,14 @@ class _NovoContatoPageState extends State<NovoContatoPage> {
       ),
     );
   }
+  void updateTipoContato(ContatoType? tipoContato) =>
+      contato.tipo = tipoContato;
+  void updateCpf(cpf) => contato.cpf = cpf;
 
+
+  void updateTelefone(telefone) => contato.telefone = telefone;
+
+  void updateNome(nome) {
+    contato.nome = nome;
+  }
 }

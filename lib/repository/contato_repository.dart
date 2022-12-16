@@ -1,4 +1,5 @@
 import 'package:form_flutter/model/contato.dart';
+import 'package:form_flutter/model/contato_type.dart';
 
 class ContatoRepository {
   static List<ContatoModel> _contatos = [];

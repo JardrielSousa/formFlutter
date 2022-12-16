@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:form_flutter/model/contato_type.dart';
 
 class ContatoModel {
   String? nome ;
@@ -33,6 +34,3 @@ class ContatoModel {
   }
 }
 
-enum ContatoType {
-  CELULAR , TRABALHO , FAVORITO , CASA
-}

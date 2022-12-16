@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:form_flutter/model/contato.dart';
 import 'package:form_flutter/pages/lista_contato/list_contato.dart';
 import 'package:form_flutter/pages/novo_contato.dart';
 
@@ -23,7 +24,8 @@ class ListContatoPage extends StatelessWidget {
 
   sendNewContato(BuildContext context) {
     Navigator.of(context)
-        .push(new MaterialPageRoute(builder: (_) => NovoContatoPage()));
+        .push(new MaterialPageRoute(builder: (_) => NovoContatoPage(contato: new ContatoModel(nome: '', telefone: '',
+        tipo: null, cpf: ''))));
   }
 
 }
